@@ -48,5 +48,24 @@ class KnightPathFinder
     private_constant :MOVES
 
     private
+
+    attr_accessor :root_node, :considered_positions
+
+    def build_move_tree
+        self.root_node = PolyTreeNode.new(start_position)
+
+        nodes = [root_node]
+            until nodes.empty?
+                current_node = nodes.shift
+
+                current_pos = current_node.value
+                new_move_positions(current_pos).each do |next_pos|
+                    next_node = PolyTreeNode.new(next_pos)
+                    current_node.add_child(next_node)
+                    nodes << next_node
+                end
+            end
+    end
+    
     
 end
