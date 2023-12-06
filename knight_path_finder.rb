@@ -2,7 +2,7 @@ require_relative 'polytree_node'
 
 class KnightPathFinder
 
-    attr_reader :position, :previous_position, :jumps
+    attr_reader :start_position
 
     MOVES = {
         [-2, -1]
@@ -31,15 +31,22 @@ class KnightPathFinder
     end
 
     def initialize(starting_position)
-        @position = starting_position
-        @previous_position = nil
-        @jumps = []
+        @start_position = starting_position
+        @coord_positions = [starting_position]
+        
+        build_move_tree
     end
 
-    def previous_position=(node)
-        @previous_position.jumps.delete(self) unless @previous_position.nil?
-        @previous_position = node
-        @previous_position.children << self unless @previous_position.nil?
+    def find_path(end_pos)
+        end_node = root_node.dfs(end_pos)
+
+        track_path_back(end_node)
+        .reverse
+        .map(&:value)
     end
+   
+    private_constant :MOVES
+
+    private
     
 end
